@@ -2,7 +2,7 @@
   "boards": [
     {
       "name": "Board Name",
-      "isActive": false,
+      "isActive": true,
       "columns": [
         {
           "name": "A faire",
