@@ -161,12 +161,12 @@
       "isActive": false,
       "columns": [
         {
-          "name": "Todo",
+          "name": "A faire",
           "tasks": [
             {
               "title": "Plan Product Hunt launch",
               "description": "",
-              "status": "Todo",
+              "status": "A faire",
               "subtasks": [
                 {
                   "title": "Find hunter",
@@ -239,11 +239,11 @@
           ]
         },
         {
-          "name": "Doing",
+          "name": "En cours",
           "tasks": []
         },
         {
-          "name": "Done",
+          "name": "Terminé",
           "tasks": []
         }
       ]
