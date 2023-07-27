@@ -7,7 +7,7 @@ import nightIcon from "../assets/icon-night.svg";
 import { Switch } from "@headlessui/react";
 import useDarkMode from "../Hooks/useDarkMode.js";
 
-function HeaderDropdown({ setOpenDropdown }) {
+function HeaderDropdown({ setOpenDropdown, setBoardModalOpen }) {
   const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
@@ -36,7 +36,7 @@ function HeaderDropdown({ setOpenDropdown }) {
         <div>
           {boards.map((board, index) => (
             <div
-              className={` flex items-baseline space-x-2 px-5 py-4 ${
+              className={` flex items-baseline dark:text-white space-x-2 px-5 py-4 ${
                 board.isActive && "bg-[#38ada9] rounded-r-full text-white mr-8"
               }`}
               key={index}
@@ -46,7 +46,13 @@ function HeaderDropdown({ setOpenDropdown }) {
             </div>
           ))}
 
-          <div className=" flex items-center space-x-2 text-[#38ada9] px-5 py-4">
+          <div
+            onClick={() => {
+              setBoardModalOpen(true);
+              setOpenDropdown(false);
+            }}
+            className=" cursor-pointer flex items-center space-x-2 text-[#38ada9] px-5 py-4"
+          >
             <img src={plusIcon} alt="plusIcon" className=" h-4" />
             <p className=" text-lg font-bold">Create New Board</p>
           </div>

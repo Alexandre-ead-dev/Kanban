@@ -4,9 +4,11 @@ import iconDown from "../assets/icon-chevron-down.svg";
 import iconUp from "../assets/icon-chevron-up.svg";
 import ellipsis from "../assets/icon-vertical-ellipsis.svg";
 import HeaderDropdown from "./HeaderDropdown";
+import AddEditBoardModal from "../modals/AddEditBoardModal";
 
-function Header() {
+function Header({ setBoardModalOpen, boardModalOpen }) {
   const [openDropdown, setOpenDropdown] = useState(false);
+  const [boardType, setBoardType] = useState("add");
 
   return (
     <div className=" p-4 fixed left-0 bg-white dark:bg-[#2b2c37] z-50 right-0 ">
@@ -35,10 +37,22 @@ function Header() {
           <button className="hidden md:block button"> + Add New Task</button>
 
           <button className=" button py-1 px-3 md:hidden">+</button>
-          <img src={ellipsis} alt="ellipsis" className=" cursor-pointer h-6" />
+          <img src={ellipsis} alt="ellipsis" className=" cursor-pointer h-6 " />
         </div>
       </header>
-      {openDropdown && <HeaderDropdown setOpenDropdown={setOpenDropdown} />}
+      {openDropdown && (
+        <HeaderDropdown
+          setBoardModalOpen={setBoardModalOpen}
+          setOpenDropdown={setOpenDropdown}
+        />
+      )}
+
+      {boardModalOpen && (
+        <AddEditBoardModal
+          type={boardType}
+          setBoardModalOpen={setBoardModalOpen}
+        />
+      )}
     </div>
   );
 }
