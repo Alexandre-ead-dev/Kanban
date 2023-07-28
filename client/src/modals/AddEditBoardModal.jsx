@@ -1,18 +1,33 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import boardSlices from "../redux/boardsSlice";
 
 function AddEditBoardModal({ setBoardModalOpen, type }) {
   const dispatch = useDispatch();
 
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [name, setName] = useState("");
   const [newColumns, setNewColumns] = useState([
     { name: "Todo", task: [], id: uuidv4() },
     { name: "In Process", task: [], id: uuidv4() },
   ]);
   const [isValid, setIsValid] = useState(true);
+
+  const board = useSelector((state) => state.boards).find(
+    (board) => board.isActive
+  );
+
+  if (type === "edit" && isFirstLoad) {
+    setNewColumns(
+      board.columns.map((col) => {
+        return { ...col, id: uuidv4() };
+      })
+    );
+    setName(board.name);
+    setIsFirstLoad(false);
+  }
 
   const onChange = (id, newValue) => {
     setNewColumns((prevState) => {
@@ -61,7 +76,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
       {/* Container */}
       <div className=" scrollbar-hide overflow-y-scroll max-h-[95vh] bg-white dark:bg-[#2b2c37] text-black dark:text-white font-bold shadow-md shadow-[#364e7e1a] max-w-md mx-auto w-full px-8 py-8 rounded-xl">
         <h3 className=" text-lg">
-          {type === "edit" ? "Edit" : "Add New"} Board
+          {type === "edit" ? `Edit ${board.name}` : "Add New Board"}
         </h3>
 
         {/* Task Name */}
