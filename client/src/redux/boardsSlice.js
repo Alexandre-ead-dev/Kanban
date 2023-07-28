@@ -35,9 +35,9 @@ const boardsSlice = createSlice({
       });
     },
     addTask: (state, action) => {
-      const { title, status, description, subtasks, newColIndex } =
+      const { title, status, description, checklists, newColIndex } =
         action.payload;
-      const task = { title, description, subtasks, status };
+      const task = { title, description, checklists, status };
       const board = state.find((board) => board.isActive);
       const column = board.columns.find((col, index) => index === newColIndex);
       column.tasks.push(task);
@@ -47,7 +47,7 @@ const boardsSlice = createSlice({
         title,
         status,
         description,
-        subtasks,
+        checklists,
         prevColIndex,
         newColIndex,
         taskIndex,
@@ -58,7 +58,7 @@ const boardsSlice = createSlice({
       task.title = title;
       task.status = status;
       task.description = description;
-      task.subtasks = subtasks;
+      task.checklists = checklists;
       if (prevColIndex === newColIndex) return;
       column.tasks = column.tasks.filter((task, index) => index !== taskIndex);
       const newCol = board.columns.find((col, index) => index === newColIndex);
@@ -76,7 +76,7 @@ const boardsSlice = createSlice({
       const board = state.find((board) => board.isActive);
       const col = board.columns.find((col, i) => i === payload.colIndex);
       const task = col.tasks.find((task, i) => i === payload.taskIndex);
-      const subtask = task.subtasks.find((subtask, i) => i === payload.index);
+      const subtask = task.checklists.find((subtask, i) => i === payload.index);
       subtask.isCompleted = !subtask.isCompleted;
     },
     setTaskStatus: (state, action) => {
