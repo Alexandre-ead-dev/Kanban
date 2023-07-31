@@ -119,7 +119,6 @@ function AddEditTaskModal({
             className=" bg-transparent px-4 py-2 outline-none focus:border-0 rounded-md text-sm 
             border border-gray-600 focus:outline-[#38ada9] ring-0"
             type="text"
-            placeholder="e.g Workout"
           />
         </div>
 
@@ -133,7 +132,6 @@ function AddEditTaskModal({
             onChange={(e) => setDescription(e.target.value)}
             className=" bg-transparent px-4 py-2 outline-none focus:border-0 rounded-md text-sm 
              min-h-[200px] border border-gray-600 focus:outline-[#38ada9] ring-0"
-            placeholder="e.g workout to-do list"
           />
         </div>
 
@@ -154,7 +152,6 @@ function AddEditTaskModal({
                   value={checklist.title}
                   className=" bg-transparent outline-none focus:border-0 flex-grow px-4 py-2 
                   rounded-md text-sm border border-gray-600 focus:outline-[#38ada9]"
-                  placeholder="e.g Push Up "
                 />
                 <img
                   src={minusIcon}
