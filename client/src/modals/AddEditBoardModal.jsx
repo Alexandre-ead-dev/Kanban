@@ -87,7 +87,6 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
           </label>
           <input
             className=" bg-transparent px-4 py-2 outline-none rounded-md text-sm border border-gray-600 focus:outline-[#38ada9] outline-1 ring-0"
-            placeholder=" e.g Backend Implement"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
