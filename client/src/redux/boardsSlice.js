@@ -71,13 +71,15 @@ const boardsSlice = createSlice({
       const task = prevCol.tasks.splice(taskIndex, 1)[0];
       board.columns.find((col, i) => i === colIndex).tasks.push(task);
     },
-    setSubtaskCompleted: (state, action) => {
+    setChecklistCompleted: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
       const col = board.columns.find((col, i) => i === payload.colIndex);
       const task = col.tasks.find((task, i) => i === payload.taskIndex);
-      const subtask = task.checklists.find((subtask, i) => i === payload.index);
-      subtask.isCompleted = !subtask.isCompleted;
+      const checklist = task.checklists.find(
+        (checklist, i) => i === payload.index
+      );
+      checklist.isCompleted = !checklist.isCompleted;
     },
     setTaskStatus: (state, action) => {
       const payload = action.payload;

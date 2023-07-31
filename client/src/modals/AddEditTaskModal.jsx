@@ -8,6 +8,7 @@ function AddEditTaskModal({
   type,
   device,
   setOpenAddEditTask,
+  setIsTaskModalOpen,
   taskIndex,
   prevColIndex = 0,
 }) {
@@ -26,8 +27,22 @@ function AddEditTaskModal({
   );
   const columns = board.columns;
   const col = columns.find((col, index) => index === prevColIndex);
+  const task = col ? col.tasks.find((task, i) => i === taskIndex) : [];
+
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const [status, setStatus] = useState(columns[prevColIndex].name);
+
+  if (type === "edit" && isFirstLoad) {
+    setChecklists(
+      task.checklists.map((checklist) => {
+        return { ...checklist, id: uuidv4() };
+      })
+    );
+    setTitle(task.title);
+    setDescription(task.description);
+    setIsFirstLoad(false);
+  }
 
   const onChange = (id, newValue) => {
     setChecklists((prevState) => {
