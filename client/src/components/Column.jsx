@@ -47,12 +47,12 @@ function Column({ colIndex }) {
       onDragOver={handleOnDragOver}
       className="scrollbar-hide mx-5 pt-[90px] min-w-[280px] "
     >
-      <p className=" font-semibold flex items-center gap-2 tracking-widest md:tracking-[.2em] text-[#828fa3]">
+      <div className=" font-semibold flex items-center gap-2 tracking-widest md:tracking-[.2em] text-[#828fa3]">
         <div className={`rounded-full w-4 h-4 ${color} `} />
-        {col.name} ({col.tasks.length})
-      </p>
+        {col.name} ({col?.tasks?.length})
+      </div>
 
-      {col.tasks.map((task, index) => (
+      {col.tasks?.map((task, index) => (
         <Task key={index} taskIndex={index} colIndex={colIndex} />
       ))}
     </div>
