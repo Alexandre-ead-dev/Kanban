@@ -58,20 +58,20 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
     setBoardModalOpen(false);
     if (type === "add") {
       dispatch(boardSlices.actions.addBoard({ name, newColumns }));
+      saveBoardData({
+        name,
+        isActive: false,
+        columns: newColumns,
+      })
+        .then((response) => {
+          console.log("Board data saved:", response);
+        })
+        .catch((error) => {
+          console.error("Failed to save board data:", error);
+        });
     } else {
       dispatch(boardSlices.actions.editBoard({ name, newColumns }));
     }
-    saveBoardData({
-      name,
-      isActive: false,
-      columns: newColumns,
-    })
-      .then((response) => {
-        console.log("Board data saved:", response);
-      })
-      .catch((error) => {
-        console.error("Failed to save board data:", error);
-      });
   };
 
   return (
@@ -102,7 +102,6 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
             onChange={(e) => {
               setName(e.target.value);
             }}
-            _id="board-name-input"
           />
         </div>
 

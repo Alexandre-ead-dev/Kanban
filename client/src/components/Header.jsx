@@ -11,14 +11,15 @@ import EllipsisMenu from "./EllipsisMenu";
 import DeleteModal from "../modals/DeleteModal";
 import boardsSlice from "../redux/boardsSlice";
 
-function Header({ setBoardModalOpen, boardModalOpen }) {
+function Header({}) {
   const dispatch = useDispatch();
 
+  const [boardModalOpen, setBoardModalOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [openAddEditTask, setOpenAddEditTask] = useState(false);
   const [isEllipsisOpen, setIsEllipsisOpen] = useState(false);
-  const [boardType, setBoardType] = useState("add");
+  const [boardType, setBoardType] = useState("");
 
   const boards = useSelector((state) => state.boards);
   const board = boards.find((board) => board.isActive);
