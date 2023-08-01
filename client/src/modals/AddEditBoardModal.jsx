@@ -10,8 +10,8 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [name, setName] = useState("");
   const [newColumns, setNewColumns] = useState([
-    { name: "Todo", task: [], id: uuidv4() },
-    { name: "In Process", task: [], id: uuidv4() },
+    { name: "Todo", tasks: [], id: uuidv4() },
+    { name: "In Process", tasks: [], id: uuidv4() },
   ]);
   const [isValid, setIsValid] = useState(true);
 
@@ -28,18 +28,6 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
     setName(board.name);
     setIsFirstLoad(false);
   }
-
-  const onChange = (id, newValue) => {
-    setNewColumns((prevState) => {
-      const newState = [...prevState];
-      const column = newState.find((col) => col.id === id);
-      column.name = newValue;
-      return newState;
-    });
-  };
-  const onDelete = (id) => {
-    setNewColumns((prevState) => prevState.filter((el) => el.id !== id));
-  };
   const validate = () => {
     setIsValid(false);
     if (!name.trim()) {
@@ -53,6 +41,17 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
     }
     setIsValid(true);
     return true;
+  };
+  const onChange = (id, newValue) => {
+    setNewColumns((prevState) => {
+      const newState = [...prevState];
+      const column = newState.find((col) => col.id === id);
+      column.name = newValue;
+      return newState;
+    });
+  };
+  const onDelete = (id) => {
+    setNewColumns((prevState) => prevState.filter((el) => el.id !== id));
   };
   const onsubmit = () => {
     setBoardModalOpen(false);
@@ -79,7 +78,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
           {type === "edit" ? `Edit ${board.name}` : "Add New Board"}
         </h3>
 
-        {/* Task Name */}
+        {/* tasks Name */}
 
         <div className=" mt-8 flex flex-col space-y-3">
           <label className=" text-sm dark:text-white text-gray-500">
@@ -126,7 +125,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
             onClick={() => {
               setNewColumns((state) => [
                 ...state,
-                { name: "", task: [], id: uuidv4() },
+                { name: "", tasks: [], id: uuidv4() },
               ]);
             }}
             className=" w-full items-center hover:opacity-75 dark:text-[#38ada9] dark:bg-white text-white bg-[#38ada9] mt-2 py-2 rounded-full"
