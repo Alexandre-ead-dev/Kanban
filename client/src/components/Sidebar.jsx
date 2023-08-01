@@ -8,10 +8,11 @@ import hideSidebarIcon from "../assets/icon-arrow-left.svg";
 import showSidebarIcon from "../assets/icon-arrow-right.svg";
 import { Switch } from "@headlessui/react";
 import boardsSlice from "../redux/boardsSlice";
+import AddEditBoardModal from "../modals/AddEditBoardModal";
 
 function Sidebar({ setIsSideBarOpen, isSideBarOpen }) {
   const dispatch = useDispatch();
-  const [isBoardModalOpen, setIsBoardModalOpen] = useState(false);
+  const [boardModalOpen, setBoardModalOpen] = useState(false);
   const [colorTheme, setTheme] = useDarkMode();
   const [darkSide, setDarkSide] = useState(
     colorTheme === "light" ? true : false
@@ -65,7 +66,7 @@ function Sidebar({ setIsSideBarOpen, isSideBarOpen }) {
                      ease-in-out cursor-pointer text-[#38ada9] px-5 py-4 hover:bg-[#38ada91a] 
                      hover:text-[#38ada9] dark:hover:bg-white  "
                     onClick={() => {
-                      setIsBoardModalOpen(true);
+                      setBoardModalOpen(true);
                     }}
                   >
                     <img src={taskIcon} className="filter-white  h-4 " />
@@ -130,11 +131,8 @@ function Sidebar({ setIsSideBarOpen, isSideBarOpen }) {
         </div>
       </div>
 
-      {isBoardModalOpen && (
-        <AddEditBoardModal
-          type="add"
-          setIsBoardModalOpen={setIsBoardModalOpen}
-        />
+      {boardModalOpen && (
+        <AddEditBoardModal type="add" setBoardModalOpen={setBoardModalOpen} />
       )}
     </div>
   );

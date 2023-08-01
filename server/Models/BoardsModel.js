@@ -33,6 +33,7 @@ const ColumnSchema = mongoose.Schema({
     require: true,
   },
   tasks: [TaskSchema],
+  _id: { type: String, required: true },
 });
 
 const BoardSchema = mongoose.Schema({

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../redux/boardsSlice";
+import { saveBoardData } from "../api";
 
 function AddEditTaskModal({
   type,
@@ -17,7 +18,7 @@ function AddEditTaskModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [checklists, setChecklists] = useState([
-    { title: "", isCompleted: false, id: uuidv4() },
+    { title: "", isCompleted: false, _id: uuidv4() },
   ]);
   const [newColIndex, setNewColIndex] = useState(prevColIndex);
   const [isValid, setIsValid] = useState(true);
@@ -36,18 +37,17 @@ function AddEditTaskModal({
   if (type === "edit" && isFirstLoad) {
     setChecklists(
       task.checklists.map((checklist) => {
-        return { ...checklist, id: uuidv4() };
+        return { ...checklist, _id: uuidv4() };
       })
     );
     setTitle(task.title);
     setDescription(task.description);
     setIsFirstLoad(false);
   }
-
-  const onChange = (id, newValue) => {
+  const onChange = (_id, newValue) => {
     setChecklists((prevState) => {
       const newState = [...prevState];
-      const checklist = newState.find((checklist) => checklist.id === id);
+      const checklist = newState.find((checklist) => checklist._id === _id);
       checklist.title = newValue;
       return newState;
     });
@@ -56,8 +56,8 @@ function AddEditTaskModal({
     setStatus(e.target.value);
     setNewColIndex(e.target.selectedIndex);
   };
-  const onDelete = (id) => {
-    setChecklists((prevState) => prevState.filter((el) => el.id !== id));
+  const onDelete = (_id) => {
+    setChecklists((prevState) => prevState.filter((el) => el._id !== _id));
   };
   const validate = () => {
     setIsValid(false);
@@ -161,7 +161,7 @@ function AddEditTaskModal({
               <div key={index} className=" flex items-center w-full">
                 <input
                   onChange={(e) => {
-                    onChange(checklist.id, e.target.value);
+                    onChange(checklist._id, e.target.value);
                   }}
                   type="text"
                   value={checklist.title}
@@ -172,7 +172,7 @@ function AddEditTaskModal({
                   src={minusIcon}
                   className=" cursor-pointer m-4"
                   onClick={() => {
-                    onDelete(checklist.id);
+                    onDelete(checklist._id);
                   }}
                 />
               </div>
@@ -183,7 +183,7 @@ function AddEditTaskModal({
             onClick={() => {
               setChecklists((state) => [
                 ...state,
-                { title: "", isCompleted: false, id: uuidv4() },
+                { title: "", isCompleted: false, _id: uuidv4() },
               ]);
             }}
             className=" w-full items-center hover:opacity-75 dark:text-[#38ada9] dark:bg-white 

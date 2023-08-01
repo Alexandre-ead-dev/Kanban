@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
 import boardSlices from "../redux/boardsSlice";
+import { saveBoardData } from "../api";
 
 function AddEditBoardModal({ setBoardModalOpen, type }) {
   const dispatch = useDispatch();
@@ -10,8 +11,8 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [name, setName] = useState("");
   const [newColumns, setNewColumns] = useState([
-    { name: "Todo", tasks: [], id: uuidv4() },
-    { name: "In Process", tasks: [], id: uuidv4() },
+    { name: "Todo", tasks: [], _id: uuidv4() },
+    { name: "In Process", tasks: [], _id: uuidv4() },
   ]);
   const [isValid, setIsValid] = useState(true);
 
@@ -22,7 +23,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
   if (type === "edit" && isFirstLoad) {
     setNewColumns(
       board.columns.map((col) => {
-        return { ...col, id: uuidv4() };
+        return { ...col, _id: uuidv4() };
       })
     );
     setName(board.name);
@@ -42,16 +43,16 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
     setIsValid(true);
     return true;
   };
-  const onChange = (id, newValue) => {
+  const onChange = (_id, newValue) => {
     setNewColumns((prevState) => {
       const newState = [...prevState];
-      const column = newState.find((col) => col.id === id);
+      const column = newState.find((col) => col._id === _id);
       column.name = newValue;
       return newState;
     });
   };
-  const onDelete = (id) => {
-    setNewColumns((prevState) => prevState.filter((el) => el.id !== id));
+  const onDelete = (_id) => {
+    setNewColumns((prevState) => prevState.filter((el) => el._id !== _id));
   };
   const onsubmit = () => {
     setBoardModalOpen(false);
@@ -60,6 +61,17 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
     } else {
       dispatch(boardSlices.actions.editBoard({ name, newColumns }));
     }
+    saveBoardData({
+      name,
+      isActive: false,
+      columns: newColumns,
+    })
+      .then((response) => {
+        console.log("Board data saved:", response);
+      })
+      .catch((error) => {
+        console.error("Failed to save board data:", error);
+      });
   };
 
   return (
@@ -90,7 +102,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
             onChange={(e) => {
               setName(e.target.value);
             }}
-            id="board-name-input"
+            _id="board-name-input"
           />
         </div>
 
@@ -101,12 +113,12 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
             Board Columns
           </label>
           {newColumns.map((column, index) => (
-            <div className=" flex items-center w-full">
+            <div className=" flex items-center w-full" key={index}>
               <input
                 className=" bg-transparent flex-grow px-4 py-2 rounded-md text-sm border border-gray-600 outline-none focus:outline-[#38ada9]"
                 value={column.name}
                 onChange={(e) => {
-                  onChange(column.id, e.target.value);
+                  onChange(column._id, e.target.value);
                 }}
                 type="text"
               />
@@ -114,7 +126,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
                 src={minusIcon}
                 className=" cursor-pointer m-4"
                 onClick={() => {
-                  onDelete(column.id);
+                  onDelete(column._id);
                 }}
               />
             </div>
@@ -125,7 +137,7 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
             onClick={() => {
               setNewColumns((state) => [
                 ...state,
-                { name: "", tasks: [], id: uuidv4() },
+                { name: "", tasks: [], _id: uuidv4() },
               ]);
             }}
             className=" w-full items-center hover:opacity-75 dark:text-[#38ada9] dark:bg-white text-white bg-[#38ada9] mt-2 py-2 rounded-full"
