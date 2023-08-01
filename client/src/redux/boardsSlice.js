@@ -1,9 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
-import data from "../data/data.json";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchBoardsFromBackend } from "../api.js";
+
+const initialState = [];
+
+export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
+  const boards = await fetchBoardsFromBackend();
+  return boards;
+});
 
 const boardsSlice = createSlice({
   name: "boards",
-  initialState: data.boards,
+  initialState,
   reducers: {
     addBoard: (state, action) => {
       const isActive = state.length > 0 ? false : true;
@@ -99,6 +106,19 @@ const boardsSlice = createSlice({
       const col = board.columns.find((col, i) => i === payload.colIndex);
       col.tasks = col.tasks.filter((task, i) => i !== payload.taskIndex);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchBoards.pending, (state, action) => {
+        console.log("Fetching boards...");
+      })
+      .addCase(fetchBoards.fulfilled, (state, action) => {
+        console.log("Boards fetched successfully:", action.payload);
+        return action.payload;
+      })
+      .addCase(fetchBoards.rejected, (state, action) => {
+        console.error("Failed to fetch boards:", action.error.message);
+      });
   },
 });
 

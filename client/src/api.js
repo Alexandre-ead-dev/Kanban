@@ -14,3 +14,12 @@ export const saveBoardData = async (data) => {
     throw error;
   }
 };
+
+export const fetchBoardsFromBackend = async () => {
+  try {
+    const response = await api.get("/boards");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

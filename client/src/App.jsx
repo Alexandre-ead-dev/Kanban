@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Center from "./components/Center";
 import { useDispatch, useSelector } from "react-redux";
-import boardsSlice from "./redux/boardsSlice";
+import boardsSlice, { fetchBoards } from "./redux/boardsSlice";
 import EmptyBoard from "./components/EmptyBoard";
 function App() {
   const dispatch = useDispatch();
@@ -12,6 +12,11 @@ function App() {
   const activeBoard = boards.find((board) => board.isActive);
   if (!activeBoard && boards.length > 0)
     dispatch(boardsSlice.actions.setBoardActive({ index: 0 }));
+
+  useEffect(() => {
+    // Fetch boards from the backend API and update Redux store
+    dispatch(fetchBoards());
+  }, []);
 
   return (
     <div className=" overflow-hidden overflow-x-scroll">

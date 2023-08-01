@@ -13,6 +13,18 @@ app.use(cors());
 app.use(express.json());
 
 // API
+app.get("/boards", async (req, res) => {
+  try {
+    const boards = await Boards.find();
+    res.status(200).json(boards);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Failed to fetch boards data from the database." });
+  }
+});
+
 app.post("/boards", async (req, res) => {
   const data = req.body;
   try {
