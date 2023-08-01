@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchBoardsFromBackend } from "../api.js";
+import { fetchBoardsFromBackend } from "./api.js";
 
 const initialState = [];
 

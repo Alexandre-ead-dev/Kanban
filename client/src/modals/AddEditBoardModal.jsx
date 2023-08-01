@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
 import boardSlices from "../redux/boardsSlice";
-import { saveBoardData } from "../api";
+import { saveBoardData } from "../redux/api";
 
 function AddEditBoardModal({ setBoardModalOpen, type }) {
   const dispatch = useDispatch();
