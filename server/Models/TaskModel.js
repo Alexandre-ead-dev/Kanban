@@ -1,36 +1,52 @@
 import mongoose from "mongoose";
 
-// Schéma pour les checklists
-const ChecklistSchema = new mongoose.Schema({
-  title: String,
-  isCompleted: Boolean,
+const ChecklistSchema = mongoose.Schema({
+  title: {
+    type: String,
+    require: true,
+  },
+  isCompleted: {
+    type: Boolean,
+    require: true,
+  },
 });
 
-// Schéma pour les tâches
-const TaskSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  status: String,
+const TaskSchema = mongoose.Schema({
+  title: {
+    type: String,
+    require: true,
+  },
+  description: {
+    type: String,
+    require: false,
+  },
+  status: {
+    type: String,
+    require: true,
+  },
   checklists: [ChecklistSchema],
 });
 
-// Schéma pour les colonnes
-const ColumnSchema = new mongoose.Schema({
-  name: String,
+const ColumnSchema = mongoose.Schema({
+  name: {
+    type: String,
+    require: true,
+  },
   tasks: [TaskSchema],
 });
 
-// Schéma pour les boards
-const BoardSchema = new mongoose.Schema({
-  name: String,
-  isActive: Boolean,
+const BoardSchema = mongoose.Schema({
+  name: {
+    type: String,
+    require: true,
+  },
+  isActive: {
+    type: Boolean,
+    require: true,
+  },
   columns: [ColumnSchema],
 });
 
-// Création des modèles à partir des schémas
-const Checklist = mongoose.model("Checklist", ChecklistSchema);
-const Task = mongoose.model("Task", TaskSchema);
-const Column = mongoose.model("Column", ColumnSchema);
-const Board = mongoose.model("Board", BoardSchema);
+const Boards = mongoose.model("Boards", BoardSchema);
 
-module.exports = { Checklist, Task, Column, Board };
+export default Boards;
