@@ -9,6 +9,7 @@ const ChecklistSchema = mongoose.Schema({
     type: Boolean,
     require: true,
   },
+  _id: { type: String, required: true },
 });
 
 const TaskSchema = mongoose.Schema({

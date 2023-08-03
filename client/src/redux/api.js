@@ -38,3 +38,15 @@ export const updateBoardData = async (boardId, updatedData) => {
     throw error;
   }
 };
+
+export const addTaskToBoard = async (boardId, newColIndex, taskData) => {
+  try {
+    const response = await api.post(
+      `/boards/addTask/${boardId}/${newColIndex}`,
+      taskData
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

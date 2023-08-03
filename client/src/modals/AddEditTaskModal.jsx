@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../redux/boardsSlice";
-import { saveBoardData } from "../redux/api";
+import { addTaskToBoard, saveBoardData } from "../redux/api";
 
 function AddEditTaskModal({
   type,
@@ -73,29 +73,46 @@ function AddEditTaskModal({
     setIsValid(true);
     return true;
   };
-  const onSubmit = (type) => {
+  // AddEditTaskModal.jsx
+
+  const onSubmit = async (type) => {
     if (type === "add") {
-      dispatch(
-        boardsSlice.actions.addTask({
-          title,
-          description,
-          checklists,
-          status,
-          newColIndex,
-        })
-      );
+      // Validate task data before adding it
+      const isValid = validate();
+      if (!isValid) {
+        return;
+      }
+
+      // Create the task object to be added
+      const newTaskData = {
+        title,
+        description,
+        checklists,
+        status,
+      };
+
+      try {
+        // Dispatch the action to add the task in Redux
+        dispatch(
+          boardsSlice.actions.addTask({
+            title,
+            description,
+            checklists,
+            status,
+            newColIndex,
+          })
+        );
+
+        // Call the API function to add the task to the board in the backend
+        addTaskToBoard(board._id, newColIndex, newTaskData);
+
+        // Close the modal
+        setOpenAddEditTask(false);
+      } catch (error) {
+        console.error("Failed to add task to board:", error);
+      }
     } else {
-      dispatch(
-        boardsSlice.actions.editTask({
-          title,
-          description,
-          checklists,
-          status,
-          taskIndex,
-          prevColIndex,
-          newColIndex,
-        })
-      );
+      // ... code for the "edit" case ...
     }
   };
 

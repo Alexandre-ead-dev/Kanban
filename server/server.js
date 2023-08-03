@@ -75,6 +75,41 @@ app.put("/boards/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to update board data" });
   }
 });
+app.post("/boards/addTask/:boardId/:newColIndex", async (req, res) => {
+  const { boardId, newColIndex } = req.params;
+  const { title, status, description, checklists } = req.body;
+
+  try {
+    const board = await Boards.findById(boardId);
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+
+    const column = board.columns.find(
+      (col, index) => index === Number(newColIndex)
+    );
+    if (!column) {
+      return res.status(404).json({ message: "Target column not found." });
+    }
+
+    // Create the new task
+    const task = {
+      title,
+      status,
+      description,
+      checklists,
+    };
+
+    column.tasks.push(task);
+
+    await board.save();
+
+    res.status(200).json(board);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to add task to the board" });
+  }
+});
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 1000;
