@@ -43,7 +43,7 @@ function Sidebar({ setIsSideBarOpen, isSideBarOpen }) {
                 ALL BOARDS ({boards?.length})
               </h3>
 
-              <div className="flex flex-col h-[70vh]  justify-between ">
+              <div className=" flex flex-col h-[70vh] justify-between scrollbar-hide overflow-y-scroll ">
                 <div>
                   {boards.map((board, index) => (
                     <div
@@ -62,14 +62,12 @@ function Sidebar({ setIsSideBarOpen, isSideBarOpen }) {
                   ))}
 
                   <div
-                    className=" flex  items-baseline space-x-2  mr-8 rounded-r-full duration-500
-                     ease-in-out cursor-pointer text-[#38ada9] px-5 py-4 hover:bg-[#38ada91a] 
-                     hover:text-[#38ada9] dark:hover:bg-white  "
+                    className=" flex  items-baseline space-x-2  mr-8 rounded-r-full duration-500 ease-in-out cursor-pointer text-[#38ada9] px-5 py-4 hover:bg-[#38ada91a] hover:text-[#38ada9] dark:hover:bg-white  "
                     onClick={() => {
                       setBoardModalOpen(true);
                     }}
                   >
-                    <img src={taskIcon} className="filter-white  h-4 " />
+                    <img src={taskIcon} className="   filter-white  h-4 " />
                     <p className=" text-lg font-bold  ">Create New Board </p>
                   </div>
                 </div>

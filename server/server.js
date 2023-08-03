@@ -39,6 +39,24 @@ app.post("/boards", async (req, res) => {
   }
 });
 
+// API to delete a board by its ID
+app.delete("/boards/:id", async (req, res) => {
+  const boardId = req.params.id;
+  try {
+    // Find the board by ID and delete it
+    const deletedBoard = await Boards.findByIdAndDelete(boardId);
+    if (!deletedBoard) {
+      return res.status(404).json({ message: "Board not found." });
+    }
+    res.status(200).json({ message: "Board deleted successfully." });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Failed to delete board from the database." });
+  }
+});
+
 // Démarrage du serveur
 const PORT = process.env.PORT || 1000;
 app.listen(PORT, console.log(`server run in port ${PORT}`));

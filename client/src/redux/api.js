@@ -9,15 +9,22 @@ const api = axios.create({
 export const saveBoardData = async (data) => {
   try {
     const response = await api.post("/boards", data);
+    return response.data; // Return the created board data
+  } catch (error) {
+    throw error;
+  }
+};
+export const fetchBoardsFromBackend = async () => {
+  try {
+    const response = await api.get("/boards");
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-
-export const fetchBoardsFromBackend = async () => {
+export const deleteBoardById = async (boardId) => {
   try {
-    const response = await api.get("/boards");
+    const response = await api.delete(`/boards/${boardId}`);
     return response.data;
   } catch (error) {
     throw error;

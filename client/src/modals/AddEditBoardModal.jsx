@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
-import boardSlices from "../redux/boardsSlice";
+import boardSlices, { fetchBoards } from "../redux/boardsSlice";
 import { saveBoardData } from "../redux/api";
+import boardsSlice from "../redux/boardsSlice";
 
 function AddEditBoardModal({ setBoardModalOpen, type }) {
   const dispatch = useDispatch();
@@ -54,21 +55,25 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
   const onDelete = (_id) => {
     setNewColumns((prevState) => prevState.filter((el) => el._id !== _id));
   };
-  const onsubmit = () => {
+
+  const onsubmit = async (type) => {
     setBoardModalOpen(false);
     if (type === "add") {
-      dispatch(boardSlices.actions.addBoard({ name, newColumns }));
-      saveBoardData({
-        name,
-        isActive: false,
-        columns: newColumns,
-      })
-        .then((response) => {
-          console.log("Board data saved:", response);
-        })
-        .catch((error) => {
-          console.error("Failed to save board data:", error);
+      try {
+        const newBoardData = await saveBoardData({
+          name,
+          isActive: false,
+          columns: newColumns,
         });
+
+        dispatch(boardsSlice.actions.addBoard(newBoardData));
+
+        dispatch(fetchBoards());
+
+        console.log("Board data saved:", newBoardData);
+      } catch (error) {
+        console.error("Failed to save board data:", error);
+      }
     } else {
       dispatch(boardSlices.actions.editBoard({ name, newColumns }));
     }
