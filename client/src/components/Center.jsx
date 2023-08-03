@@ -44,7 +44,7 @@ function Center({ boardModalOpen, setBoardModalOpen }) {
 
       {/* Columns */}
 
-      {columns.length > 0 ? (
+      {columns?.length > 0 ? (
         <>
           {columns.map((col, index) => (
             <Column key={index} colIndex={index} />

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
-import boardSlices, { fetchBoards } from "../redux/boardsSlice";
-import { saveBoardData } from "../redux/api";
+import boardSlices, { fetchBoards } from "../redux/boardsSlice.js";
+import { saveBoardData, updateBoardData } from "../redux/api.js";
 import boardsSlice from "../redux/boardsSlice";
 
 function AddEditBoardModal({ setBoardModalOpen, type }) {
@@ -75,7 +75,20 @@ function AddEditBoardModal({ setBoardModalOpen, type }) {
         console.error("Failed to save board data:", error);
       }
     } else {
-      dispatch(boardSlices.actions.editBoard({ name, newColumns }));
+      try {
+        const boardId = board._id;
+        const updatedBoardData = await updateBoardData(boardId, {
+          name,
+          columns: newColumns,
+        });
+
+        dispatch(boardsSlice.actions.editBoard(updatedBoardData));
+        dispatch(fetchBoards());
+
+        console.log("Board data updated:", updatedBoardData);
+      } catch (error) {
+        console.error("Failed to update board data:", error);
+      }
     }
   };
 

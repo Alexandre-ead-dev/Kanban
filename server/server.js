@@ -24,7 +24,6 @@ app.get("/boards", async (req, res) => {
       .json({ message: "Failed to fetch boards data from the database." });
   }
 });
-
 app.post("/boards", async (req, res) => {
   const data = req.body;
   try {
@@ -38,8 +37,6 @@ app.post("/boards", async (req, res) => {
     res.status(500).json({ message: "Failed to save data to the database." });
   }
 });
-
-// API to delete a board by its ID
 app.delete("/boards/:id", async (req, res) => {
   const boardId = req.params.id;
   try {
@@ -54,6 +51,28 @@ app.delete("/boards/:id", async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to delete board from the database." });
+  }
+});
+app.put("/boards/:id", async (req, res) => {
+  const boardId = req.params.id;
+  const updatedData = req.body;
+
+  try {
+    const board = await Boards.findById(boardId);
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+
+    // Update the board's data
+    board.name = updatedData.name;
+    board.isActive = updatedData.isActive;
+    board.columns = updatedData.columns; // Ensure to update the columns array
+    await board.save();
+
+    res.status(200).json(board);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update board data" });
   }
 });
 

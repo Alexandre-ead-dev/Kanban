@@ -30,3 +30,11 @@ export const deleteBoardById = async (boardId) => {
     throw error;
   }
 };
+export const updateBoardData = async (boardId, updatedData) => {
+  try {
+    const response = await api.put(`/boards/${boardId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
