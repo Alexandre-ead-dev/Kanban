@@ -177,6 +177,43 @@ app.put(
     }
   }
 );
+app.delete(
+  "/boards/deleteTask/:boardId/:colIndex/:taskIndex",
+  async (req, res) => {
+    const { boardId, colIndex, taskIndex } = req.params;
+
+    try {
+      const board = await Boards.findById(boardId);
+      if (!board) {
+        return res.status(404).json({ message: "Board not found" });
+      }
+
+      const column = board.columns.find(
+        (col, index) => index === Number(colIndex)
+      );
+      if (!column) {
+        return res.status(404).json({ message: "Column not found." });
+      }
+
+      if (taskIndex >= column.tasks.length) {
+        return res
+          .status(404)
+          .json({ message: "Task not found in the column." });
+      }
+
+      // Remove the task from the column's tasks array
+      column.tasks.splice(taskIndex, 1);
+
+      // Save the updated board to the database
+      await board.save();
+
+      res.status(200).json(board);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to delete task from the board" });
+    }
+  }
+);
 
 // Démarrage du serveur
 app.listen(PORT, console.log(`server run in port ${PORT}`));

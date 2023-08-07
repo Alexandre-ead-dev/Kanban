@@ -6,6 +6,7 @@ import boardsSlice from "../redux/boardsSlice";
 import AddEditTaskModal from "./AddEditTaskModal";
 import DeleteModal from "./DeleteModal";
 import Checklist from "../components/Checklist";
+import { deleteTaskFromBoard } from "../redux/api";
 
 function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
   const dispatch = useDispatch();
@@ -55,16 +56,26 @@ function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
     setIsElipsisMenuOpen(false);
     setIsDeleteModalOpen(true);
   };
-  const onDeleteBtnClick = (e) => {
+  const onDeleteBtnClick = async (e) => {
     if (e.target.textContent === "Delete") {
-      dispatch(boardsSlice.actions.deleteTask({ taskIndex, colIndex }));
-      setIsTaskModalOpen(false);
-      setIsDeleteModalOpen(false);
+      try {
+        // Delete the task from the board on the server
+        await deleteTaskFromBoard(board._id, colIndex, taskIndex);
+
+        // Dispatch the deleteTask action to update the state (frontend) after deletion
+        dispatch(boardsSlice.actions.deleteTask({ taskIndex, colIndex }));
+
+        // Close the task and delete modals
+        setIsTaskModalOpen(false);
+        setIsDeleteModalOpen(false);
+      } catch (error) {
+        console.error("Failed to delete task:", error);
+        // Optionally, show an error message to the user here
+      }
     } else {
       setIsDeleteModalOpen(false);
     }
   };
-
   return (
     <div
       onClick={onClose}

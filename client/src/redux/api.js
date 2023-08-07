@@ -66,3 +66,13 @@ export const editTaskOnBoard = async (
     throw error;
   }
 };
+export const deleteTaskFromBoard = async (boardId, colIndex, taskIndex) => {
+  try {
+    const response = await api.delete(
+      `/boards/deleteTask/${boardId}/${colIndex}/${taskIndex}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
