@@ -12,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Var
+const PORT = process.env.PORT || 1000;
+
 // API
 app.get("/boards", async (req, res) => {
   try {
@@ -110,7 +113,70 @@ app.post("/boards/addTask/:boardId/:newColIndex", async (req, res) => {
     res.status(500).json({ message: "Failed to add task to the board" });
   }
 });
+app.put(
+  "/boards/editTask/:boardId/:prevColIndex/:newColIndex/:taskIndex",
+  async (req, res) => {
+    const { boardId, prevColIndex, newColIndex, taskIndex } = req.params;
+    const { title, status, description, checklists } = req.body;
+
+    try {
+      const board = await Boards.findById(boardId);
+      if (!board) {
+        return res.status(404).json({ message: "Board not found" });
+      }
+
+      const prevColumn = board.columns.find(
+        (col, index) => index === Number(prevColIndex)
+      );
+      if (!prevColumn) {
+        return res.status(404).json({ message: "Previous column not found." });
+      }
+
+      const task = prevColumn.tasks.find(
+        (task, index) => index === Number(taskIndex)
+      );
+      if (!task) {
+        return res
+          .status(404)
+          .json({ message: "Task not found in the previous column." });
+      }
+
+      // Create a shallow clone of the board object
+      const updatedBoard = { ...board.toObject() };
+
+      // Remove the task from the previous column
+      updatedBoard.columns[prevColIndex].tasks.splice(taskIndex, 1);
+
+      if (prevColIndex !== newColIndex) {
+        // If moving to a different column, add the task to the new column
+        updatedBoard.columns[newColIndex].tasks.push({
+          ...task.toObject(),
+          title,
+          status,
+          description,
+          checklists,
+        });
+      } else {
+        // If not moving to a different column, update the task within the same column
+        updatedBoard.columns[prevColIndex].tasks.splice(taskIndex, 0, {
+          ...task.toObject(),
+          title,
+          status,
+          description,
+          checklists,
+        });
+      }
+
+      // Save the changes to the cloned board object
+      await Boards.findByIdAndUpdate(boardId, updatedBoard, { new: true });
+
+      res.status(200).json(updatedBoard);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to edit task on the board" });
+    }
+  }
+);
 
 // Démarrage du serveur
-const PORT = process.env.PORT || 1000;
 app.listen(PORT, console.log(`server run in port ${PORT}`));

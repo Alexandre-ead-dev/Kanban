@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import minusIcon from "../assets/icon-minus.svg";
 import { useDispatch, useSelector } from "react-redux";
-import boardsSlice from "../redux/boardsSlice";
-import { addTaskToBoard, saveBoardData } from "../redux/api";
+import boardsSlice, { fetchBoards } from "../redux/boardsSlice";
+import { addTaskToBoard, editTaskOnBoard } from "../redux/api";
 
 function AddEditTaskModal({
   type,
@@ -73,17 +73,12 @@ function AddEditTaskModal({
     setIsValid(true);
     return true;
   };
-  // AddEditTaskModal.jsx
-
   const onSubmit = async (type) => {
     if (type === "add") {
-      // Validate task data before adding it
       const isValid = validate();
       if (!isValid) {
         return;
       }
-
-      // Create the task object to be added
       const newTaskData = {
         title,
         description,
@@ -92,7 +87,6 @@ function AddEditTaskModal({
       };
 
       try {
-        // Dispatch the action to add the task in Redux
         dispatch(
           boardsSlice.actions.addTask({
             title,
@@ -102,8 +96,6 @@ function AddEditTaskModal({
             newColIndex,
           })
         );
-
-        // Call the API function to add the task to the board in the backend
         addTaskToBoard(board._id, newColIndex, newTaskData);
 
         // Close the modal
@@ -112,7 +104,37 @@ function AddEditTaskModal({
         console.error("Failed to add task to board:", error);
       }
     } else {
-      // ... code for the "edit" case ...
+      const updatedTaskData = {
+        title,
+        description,
+        checklists,
+        status,
+      };
+      try {
+        dispatch(
+          boardsSlice.actions.editTask({
+            title,
+            description,
+            checklists,
+            status,
+            taskIndex,
+            prevColIndex,
+            newColIndex,
+          })
+        );
+
+        await editTaskOnBoard(
+          board._id,
+          prevColIndex,
+          newColIndex,
+          taskIndex,
+          updatedTaskData
+        );
+
+        setOpenAddEditTask(false);
+      } catch (error) {
+        console.error("Failed to edit task:", error);
+      }
     }
   };
 

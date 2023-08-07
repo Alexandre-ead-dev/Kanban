@@ -134,7 +134,7 @@ function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
             onChange={onChange}
           >
             {columns.map((col, index) => (
-              <option className="status-options" key={index}>
+              <option className=" dark:bg-[#2b2c37]" key={index}>
                 {col.name}
               </option>
             ))}
