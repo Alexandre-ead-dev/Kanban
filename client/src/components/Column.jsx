@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../redux/boardsSlice";
 import Task from "./Task";
+import { dragTaskOnBoard } from "../redux/api";
 
 function Column({ colIndex }) {
   const colors = [
@@ -26,7 +27,7 @@ function Column({ colIndex }) {
     setColor(shuffle(colors).pop());
   }, [dispatch]);
 
-  const handleOnDrop = (e) => {
+  const handleOnDrop = async (e) => {
     const { prevColIndex, taskIndex } = JSON.parse(
       e.dataTransfer.getData("text")
     );
@@ -35,6 +36,16 @@ function Column({ colIndex }) {
       dispatch(
         boardsSlice.actions.dragTask({ colIndex, prevColIndex, taskIndex })
       );
+
+      try {
+        await dragTaskOnBoard(board._id, {
+          colIndex,
+          prevColIndex,
+          taskIndex,
+        });
+      } catch (error) {
+        console.error("Error dragging task:", error);
+      }
     }
   };
   const handleOnDragOver = (e) => {

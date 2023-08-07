@@ -76,3 +76,28 @@ export const deleteTaskFromBoard = async (boardId, colIndex, taskIndex) => {
     throw error;
   }
 };
+export const dragTaskOnBoard = async (boardId, dragData) => {
+  try {
+    const response = await api.put(`/boards/dragTask/${boardId}`, dragData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+export const setChecklistCompletedOnBoard = async (
+  boardId,
+  colIndex,
+  taskIndex,
+  checklistIndex,
+  isCompleted
+) => {
+  try {
+    const response = await api.put(
+      `/boards/setChecklistCompleted/${boardId}/${colIndex}/${taskIndex}/${checklistIndex}`,
+      { isCompleted }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

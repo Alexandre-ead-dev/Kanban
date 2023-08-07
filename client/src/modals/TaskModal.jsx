@@ -76,6 +76,7 @@ function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
       setIsDeleteModalOpen(false);
     }
   };
+
   return (
     <div
       onClick={onClose}
