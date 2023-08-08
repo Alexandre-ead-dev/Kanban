@@ -101,3 +101,20 @@ export const setChecklistCompletedOnBoard = async (
     throw error;
   }
 };
+export const setTaskStatusOnBoard = async (
+  boardId,
+  colIndex,
+  taskIndex,
+  status,
+  newColIndex
+) => {
+  try {
+    const response = await api.put(
+      `/boards/setTaskStatus/${boardId}/${colIndex}/${taskIndex}`,
+      { status, newColIndex }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

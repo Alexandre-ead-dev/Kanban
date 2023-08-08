@@ -6,7 +6,7 @@ import boardsSlice from "../redux/boardsSlice";
 import AddEditTaskModal from "./AddEditTaskModal";
 import DeleteModal from "./DeleteModal";
 import Checklist from "../components/Checklist";
-import { deleteTaskFromBoard } from "../redux/api";
+import { deleteTaskFromBoard, setTaskStatusOnBoard } from "../redux/api";
 
 function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
   const dispatch = useDispatch();
@@ -34,9 +34,20 @@ function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
     setStatus(e.target.value);
     setNewColIndex(e.target.selectedIndex);
   };
-  const onClose = (e) => {
+  const onClose = async (e) => {
     if (e.target !== e.currentTarget) {
       return;
+    }
+    try {
+      await setTaskStatusOnBoard(
+        board._id,
+        colIndex,
+        taskIndex,
+        status,
+        newColIndex
+      );
+    } catch (error) {
+      console.error("Failed to set task status:", error);
     }
     dispatch(
       boardsSlice.actions.setTaskStatus({
@@ -46,6 +57,7 @@ function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
         status,
       })
     );
+
     setIsTaskModalOpen(false);
   };
   const setOpenEditModal = () => {

@@ -16,6 +16,8 @@ app.use(express.json());
 const PORT = process.env.PORT || 1000;
 
 // API
+
+// Get Boards
 app.get("/boards", async (req, res) => {
   try {
     const boards = await Boards.find();
@@ -27,6 +29,7 @@ app.get("/boards", async (req, res) => {
       .json({ message: "Failed to fetch boards data from the database." });
   }
 });
+// Create Boards
 app.post("/boards", async (req, res) => {
   const data = req.body;
   try {
@@ -40,6 +43,7 @@ app.post("/boards", async (req, res) => {
     res.status(500).json({ message: "Failed to save data to the database." });
   }
 });
+// Delete Boards
 app.delete("/boards/:id", async (req, res) => {
   const boardId = req.params.id;
   try {
@@ -56,6 +60,7 @@ app.delete("/boards/:id", async (req, res) => {
       .json({ message: "Failed to delete board from the database." });
   }
 });
+// Edit Boards
 app.put("/boards/:id", async (req, res) => {
   const boardId = req.params.id;
   const updatedData = req.body;
@@ -78,6 +83,7 @@ app.put("/boards/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to update board data" });
   }
 });
+// Create Tasks
 app.post("/boards/addTask/:boardId/:newColIndex", async (req, res) => {
   const { boardId, newColIndex } = req.params;
   const { title, status, description, checklists } = req.body;
@@ -113,6 +119,7 @@ app.post("/boards/addTask/:boardId/:newColIndex", async (req, res) => {
     res.status(500).json({ message: "Failed to add task to the board" });
   }
 });
+// Edit Tasks
 app.put(
   "/boards/editTask/:boardId/:prevColIndex/:newColIndex/:taskIndex",
   async (req, res) => {
@@ -172,6 +179,7 @@ app.put(
     }
   }
 );
+// Delete Tasks
 app.delete(
   "/boards/deleteTask/:boardId/:colIndex/:taskIndex",
   async (req, res) => {
@@ -209,6 +217,7 @@ app.delete(
     }
   }
 );
+// Drag Tasks
 app.put("/boards/dragTask/:boardId", async (req, res) => {
   const { boardId } = req.params;
   const { colIndex, prevColIndex, taskIndex } = req.body;
@@ -249,6 +258,7 @@ app.put("/boards/dragTask/:boardId", async (req, res) => {
     res.status(500).json({ message: "Failed to drag task on the board" });
   }
 });
+// Set Checklist isCompleted
 app.put(
   "/boards/setChecklistCompleted/:boardId/:colIndex/:taskIndex/:checklistIndex",
   async (req, res) => {
@@ -287,6 +297,60 @@ app.put(
       res
         .status(500)
         .json({ message: "Failed to set checklist completed on the board" });
+    }
+  }
+);
+// Set Task Status
+app.put(
+  "/boards/setTaskStatus/:boardId/:colIndex/:taskIndex",
+  async (req, res) => {
+    const { boardId, colIndex, taskIndex } = req.params;
+    const { status, newColIndex } = req.body;
+
+    try {
+      const board = await Boards.findById(boardId);
+      if (!board) {
+        return res.status(404).json({ message: "Board not found" });
+      }
+
+      const prevColumn = board.columns.find(
+        (col, index) => index === Number(colIndex)
+      );
+      if (!prevColumn) {
+        return res.status(404).json({ message: "Previous column not found." });
+      }
+
+      const task = prevColumn.tasks.find(
+        (task, index) => index === Number(taskIndex)
+      );
+      if (!task) {
+        return res
+          .status(404)
+          .json({ message: "Task not found in the previous column." });
+      }
+
+      const updatedBoard = { ...board.toObject() };
+
+      updatedBoard.columns[colIndex].tasks.splice(taskIndex, 1);
+
+      if (colIndex !== newColIndex) {
+        updatedBoard.columns[newColIndex].tasks.push({
+          ...task.toObject(),
+          status,
+        });
+      } else {
+        updatedBoard.columns[colIndex].tasks.splice(taskIndex, 0, {
+          ...task.toObject(),
+          status,
+        });
+      }
+
+      await Boards.findByIdAndUpdate(boardId, updatedBoard, { new: true });
+
+      res.status(200).json(updatedBoard);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to set task status" });
     }
   }
 );
