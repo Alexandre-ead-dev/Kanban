@@ -8,7 +8,7 @@ const api = axios.create({
 
 export const saveBoardData = async (data) => {
   try {
-    const response = await api.post("/boards", data);
+    const response = await api.post("/api/boards", data);
     return response.data; // Return the created board data
   } catch (error) {
     throw error;
@@ -16,7 +16,7 @@ export const saveBoardData = async (data) => {
 };
 export const fetchBoardsFromBackend = async () => {
   try {
-    const response = await api.get("/boards");
+    const response = await api.get("/api/boards");
     return response.data;
   } catch (error) {
     throw error;
@@ -24,7 +24,7 @@ export const fetchBoardsFromBackend = async () => {
 };
 export const deleteBoardById = async (boardId) => {
   try {
-    const response = await api.delete(`/boards/${boardId}`);
+    const response = await api.delete(`/api/boards/${boardId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -32,7 +32,7 @@ export const deleteBoardById = async (boardId) => {
 };
 export const updateBoardData = async (boardId, updatedData) => {
   try {
-    const response = await api.put(`/boards/${boardId}`, updatedData);
+    const response = await api.put(`/api/boards/${boardId}`, updatedData);
     return response.data;
   } catch (error) {
     throw error;
@@ -41,7 +41,7 @@ export const updateBoardData = async (boardId, updatedData) => {
 export const addTaskToBoard = async (boardId, newColIndex, taskData) => {
   try {
     const response = await api.post(
-      `/boards/addTask/${boardId}/${newColIndex}`,
+      `/api/tasks/addTask/${boardId}/${newColIndex}`,
       taskData
     );
     return response.data;
@@ -58,7 +58,7 @@ export const editTaskOnBoard = async (
 ) => {
   try {
     const response = await api.put(
-      `/boards/editTask/${boardId}/${prevColIndex}/${newColIndex}/${taskIndex}`,
+      `/api/tasks/editTask/${boardId}/${prevColIndex}/${newColIndex}/${taskIndex}`,
       taskData
     );
     return response.data;
@@ -69,7 +69,7 @@ export const editTaskOnBoard = async (
 export const deleteTaskFromBoard = async (boardId, colIndex, taskIndex) => {
   try {
     const response = await api.delete(
-      `/boards/deleteTask/${boardId}/${colIndex}/${taskIndex}`
+      `/api/tasks/deleteTask/${boardId}/${colIndex}/${taskIndex}`
     );
     return response.data;
   } catch (error) {
@@ -78,7 +78,7 @@ export const deleteTaskFromBoard = async (boardId, colIndex, taskIndex) => {
 };
 export const dragTaskOnBoard = async (boardId, dragData) => {
   try {
-    const response = await api.put(`/boards/dragTask/${boardId}`, dragData);
+    const response = await api.put(`/api/tasks/dragTask/${boardId}`, dragData);
     return response.data;
   } catch (error) {
     throw error;
@@ -93,7 +93,7 @@ export const setChecklistCompletedOnBoard = async (
 ) => {
   try {
     const response = await api.put(
-      `/boards/setChecklistCompleted/${boardId}/${colIndex}/${taskIndex}/${checklistIndex}`,
+      `/api/tasks/setChecklistCompleted/${boardId}/${colIndex}/${taskIndex}/${checklistIndex}`,
       { isCompleted }
     );
     return response.data;
@@ -110,7 +110,7 @@ export const setTaskStatusOnBoard = async (
 ) => {
   try {
     const response = await api.put(
-      `/boards/setTaskStatus/${boardId}/${colIndex}/${taskIndex}`,
+      `/api/tasks/setTaskStatus/${boardId}/${colIndex}/${taskIndex}`,
       { status, newColIndex }
     );
     return response.data;
