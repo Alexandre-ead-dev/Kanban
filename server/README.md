@@ -12,13 +12,14 @@ To run the server locally, follow these steps:
 4. Install the dependencies by running: `npm install`
 5. Start the server using: `npm start`
 6. The server will run on `http://localhost:1000`, unless a different port is specified.
+7. Connect your MongoDB database in your app.
 
 ## Folder Structure
 
 The server folder has the following structure:
 
 - `server.js`: The main server file that sets up the Express app and starts the server.
-- `MongoDb.js`: Contains the MongoDB connection code to establish a connection to the database.
+- `MongoDb.js`: Contains the MongoDB connection code to establish a connection to the database (change "MONGO_URL" with your url).
 - `Routes/BoardRoutes.js`: Defines the API routes for managing boards.
 - `Routes/TaskRoutes.js`: Defines the API routes for managing tasks.
 - `Models/BoardsModel.js`: Defines the Mongoose schema for boards and tasks.
