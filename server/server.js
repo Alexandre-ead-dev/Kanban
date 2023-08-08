@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDatabase from "./MongoDb.js";
-import Boards from "./Models/BoardsModel.js";
 import boardRoutes from "./Routes/BoardRoutes.js";
 import taskRoutes from "./Routes/TaskRoutes.js";
 
