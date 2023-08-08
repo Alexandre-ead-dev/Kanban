@@ -1,44 +1,20 @@
-# Server Folder
+# Kanban
 
-This folder contains the backend server code for the project. It is built using Node.js, Express.js, and MongoDB to handle data storage and retrieval.
+This project is a task management application built using React.js, Node.js, Express.js, and MongoDB. It allows users to create boards and tasks, organize them into columns, and track their progress.
+
+## Table of Contents
+- [Client Folder](#client-folder)
+- [Server Folder](#server-folder)
+- [Getting Started](#getting-started)
+
+## Client Folder
+
+The client folder contains the frontend code for the application, built with React.js. It utilizes components, hooks, modals, and Redux for state management.
+
+## Server Folder
+
+The server folder contains the backend code for the application, built using Node.js, Express.js, and MongoDB. It provides API endpoints for board and task management.
 
 ## Getting Started
 
-To run the server locally, follow these steps:
-
-1. Install Node.js and MongoDB on your system.
-2. Clone the repository to your local machine.
-3. Navigate to the server folder in the terminal.
-4. Install the dependencies by running: `npm install`
-5. Start the server using: `npm start`
-6. The server will run on `http://localhost:1000`, unless a different port is specified.
-
-## Folder Structure
-
-The server folder has the following structure:
-
-- `server.js`: The main server file that sets up the Express app and starts the server.
-- `MongoDb.js`: Contains the MongoDB connection code to establish a connection to the database.
-- `Routes/BoardRoutes.js`: Defines the API routes for managing boards.
-- `Routes/TaskRoutes.js`: Defines the API routes for managing tasks.
-- `Models/BoardsModel.js`: Defines the Mongoose schema for boards and tasks.
-
-## API Endpoints
-
-The following API endpoints are available:
-
-### Boards
-
-- `GET /api/boards`: Get all boards.
-- `POST /api/boards`: Create a new board.
-- `DELETE /api/boards/:id`: Delete a board by ID.
-- `PUT /api/boards/:id`: Update a board by ID.
-
-### Tasks
-
-- `POST /api/tasks/addTask/:boardId/:newColIndex`: Add a new task to a board.
-- `PUT /api/tasks/editTask/:boardId/:prevColIndex/:newColIndex/:taskIndex`: Edit a task on a board.
-- `DELETE /api/tasks/deleteTask/:boardId/:colIndex/:taskIndex`: Delete a task from a board.
-- `PUT /api/tasks/dragTask/:boardId`: Drag a task to a different column on a board.
-- `PUT /api/tasks/setChecklistCompleted/:boardId/:colIndex/:taskIndex/:checklistIndex`: Set a checklist item's completion status on a task.
-- `PUT /api/tasks/setTaskStatus/:boardId/:colIndex/:taskIndex`: Set the status of a task on a board.
+To run the server locally, follow the provided instructions in the server's and client's README.
