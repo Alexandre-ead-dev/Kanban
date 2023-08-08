@@ -1,7 +1,7 @@
 # Kanban App - Client
 
-![Kanban App Screenshot](![Kanban dark](https://github.com/Alexandre-ead-dev/Kanban/assets/94064067/1192df46-7efe-42d1-b7e0-45fd03cc2da8)
-) <!-- Replace with your actual screenshot -->
+Kanban Dark![Kanban dark](https://github.com/Alexandre-ead-dev/Kanban/assets/94064067/1192df46-7efe-42d1-b7e0-45fd03cc2da8)
+Kanban Light![Kanban dark](https://github.com/Alexandre-ead-dev/Kanban/assets/94064067/5b9d98c5-207e-409a-b93f-339f5532bf6b)
 
 ## Description
 
@@ -60,21 +60,22 @@ The client part of this project is a Kanban app built using ReactJS and ViteJS. 
 
 - **BoardSlice.js**: The `BoardSlice` reducer manages the state related to boards and tasks in the Kanban app. It includes actions for adding, editing, and deleting boards and tasks. Additionally, it handles actions for setting a board as active, managing task status, and updating task positions when dragged between columns. The reducer also handles fetching boards from the backend API using Redux Thunk and updating the state accordingly.
 
-##API
+## API
 The API module in this project provides functions to interact with the backend server for various CRUD operations related to boards and tasks. It uses Axios to make HTTP requests to the backend API.
 
-#Endpoints
+### Endpoints
 
--saveBoardData(data): Sends a POST request to create a new board on the server.
--fetchBoardsFromBackend(): Sends a GET request to fetch all boards from the server.
--deleteBoardById(boardId): Sends a DELETE request to delete a specific board from the server.
--updateBoardData(boardId, updatedData): Sends a PUT request to update an existing board on the server.
--addTaskToBoard(boardId, newColIndex, taskData): Sends a POST request to add a new task to a board on the server.
--editTaskOnBoard(boardId, prevColIndex, newColIndex, taskIndex, taskData): Sends a PUT request to update an existing task on the server.
--deleteTaskFromBoard(boardId, colIndex, taskIndex): Sends a DELETE request to delete a specific task from a board on the server.
--dragTaskOnBoard(boardId, dragData): Sends a PUT request to update the position of a task on the server when dragged between columns.
--setChecklistCompletedOnBoard(boardId, colIndex, taskIndex, checklistIndex, isCompleted): Sends a PUT request to update the completion status of a checklist item for a specific task on the server.
--setTaskStatusOnBoard(boardId, colIndex, taskIndex, status, newColIndex): Sends a PUT request to update the status of a specific task and potentially move it to a different column on the server.
+- saveBoardData(data): Sends a POST request to create a new board on the server.
+- fetchBoardsFromBackend(): Sends a GET request to fetch all boards from the server.
+- deleteBoardById(boardId): Sends a DELETE request to delete a specific board from the server.
+- updateBoardData(boardId, updatedData): Sends a PUT request to update an existing board on the server.
+- addTaskToBoard(boardId, newColIndex, taskData): Sends a POST request to add a new task to a board on the server.
+- editTaskOnBoard(boardId, prevColIndex, newColIndex, taskIndex, taskData): Sends a PUT request to update an existing task on the server.
+- deleteTaskFromBoard(boardId, colIndex, taskIndex): Sends a DELETE request to delete a specific task from a board on the server.
+- dragTaskOnBoard(boardId, dragData): Sends a PUT request to update the position of a task on the server when dragged between columns.
+- setChecklistCompletedOnBoard(boardId, colIndex, taskIndex, checklistIndex, isCompleted): Sends a PUT request to update the completion status of a checklist item for a specific task on the server.
+- setTaskStatusOnBoard(boardId, colIndex, taskIndex, status, newColIndex): Sends a PUT request to update the status of a specific task and potentially move it to a different column on the server.
+  
 Note: Replace API_BASE_URL in the code with the actual URL of your backend server, and ensure appropriate error handling for API request failures.
 
 
