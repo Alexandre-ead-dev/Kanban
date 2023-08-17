@@ -18,9 +18,8 @@ The client part of this project is a Kanban app built using ReactJS and ViteJS. 
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/kanban-app-client.git`
-2. Navigate to the project directory: `cd kanban-app-client`
-3. Install dependencies: `npm install`
+1. Navigate to the project directory: `cd kanban-app-client`
+2. Install dependencies: `npm install`
 
 ## Components
 
