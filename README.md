@@ -6,6 +6,14 @@ This project is a task management application built using React.js, Node.js, Exp
 - [Client Folder](#client-folder)
 - [Server Folder](#server-folder)
 - [Getting Started](#getting-started)
+- [Installation](#Installation)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/AlexandreEadDev/Kanban.git
 
 ## Client Folder
 
